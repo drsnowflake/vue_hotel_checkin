@@ -30,13 +30,12 @@ const createRouter = function (collection) {
 			});
 	});
 
-	router.delete('/:id', (req, res) => {
-		const id = req.params.id;
+	router.post('/', (req, res) => {
+		const newBooking = req.body;
 		collection
-			.deleteOne({ _id: ObjectID(id) })
-			.then(() => collection.find().toArray())
-			.then((bookings) => {
-				(res) => res.json(bookings);
+			.insertOne(newBooking)
+			.then((result) => {
+				res.json(result.ops[0]);
 			})
 			.catch((err) => {
 				console.error(err);
@@ -45,12 +44,32 @@ const createRouter = function (collection) {
 			});
 	});
 
-	router.post('/', (req, res) => {
-		const newBooking = req.body;
+	router.put('/:id', (req, res) => {
+		const id = req.params.id;
+		const updatedData = req.body;
 		collection
-			.insertOne(newBooking)
+			.findOneAndUpdate(
+				{ _id: ObjectID(id) },
+				{ $set: updatedData },
+				{ returnOriginal: false }
+			)
 			.then((result) => {
-				res.json(result.ops[0]);
+				res.json(result.value);
+			})
+			.catch((err) => {
+				console.error(err);
+				res.status(500);
+				res.json({ status: 500, error: err });
+			});
+	});
+
+	router.delete('/:id', (req, res) => {
+		const id = req.params.id;
+		collection
+			.deleteOne({ _id: ObjectID(id) })
+			.then(() => collection.find().toArray())
+			.then((bookings) => {
+				res.json(bookings);
 			})
 			.catch((err) => {
 				console.error(err);

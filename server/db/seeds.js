@@ -6,18 +6,18 @@ db.bookings.insertMany([
     {
         name: "Basil Fawlty",
         email: "basil@fawltytowers.co.uk",
-        checkedin: true
+        checkedIn: true
     },
 
     {
         name: "Polly Sherman",
         email: "polly@gmail.com",
-        checkedin: false
+        checkedIn: false
     },
 
     {
         name: "Manuel",
         email: "Manuel@hotmail.com",
-        checkedin: true
+        checkedIn: true
     }
 ]);
